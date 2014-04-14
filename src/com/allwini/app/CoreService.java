@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.allwini.app.api.AllwiniAPI;
+import com.allwini.app.utils.BaseNotification;
 import com.allwini.app.utils.Constant;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -41,7 +42,7 @@ public class CoreService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		String action = intent.getAction();
-		Log.i("debug","onStartCommand-->start!");
+		Log.i("debug", "onStartCommand-->start!");
 		if (action != null) {
 			Thread t = null;
 
@@ -72,28 +73,36 @@ public class CoreService extends Service {
 
 		@Override
 		public void run() {
-			Log.i("debug","GetMsgTask-->start!");
+			Log.i("debug", "GetMsgTask-->start!");
 			AllwiniAPI api = new AllwiniAPI();
 			api.getMsg(new AsyncHttpResponseHandler() {
 				@Override
 				public void onSuccess(int arg0, Header[] arg1, byte[] data) {
 					try {
 						JSONObject obj = new JSONObject(new String(data));
+						int count = obj.getInt("retval");
 						Intent intent = new Intent(Constant.Action_New_Msg);
-						intent.putExtra("count", obj.getInt("retval"));
+						intent.putExtra("count", count);
 						sendBroadcast(intent);
-
+						if (count > 0) {
+							BaseNotification notification = new BaseNotification(
+									getBaseContext());
+							notification.setContentText("ä½ æœ‰" + count + "æ¡æ¶ˆæ¯");
+							notification.setNotificationID(1);
+							notification.show();
+						}
 					} catch (JSONException e) {
 						e.printStackTrace();
-						// ½âÎö´íÎó->Î´µÇÂ¼ ·¢¹ã²¥
+						// è§£æå¤±è´¥ ç™»å½•å¤±è´¥
 						sendBroadcast(new Intent(Constant.Action_to_login));
 					}
+
 				}
 
 				@Override
 				public void onFailure(int arg0, Header[] arg1, byte[] arg2,
 						Throwable arg3) {
-					sendBroadcast(new Intent(Constant.Action_to_login)); // »ñÈ¡Ê§°ÜÒ²ÖØĞÂµÇÂ¼
+					sendBroadcast(new Intent(Constant.Action_to_login)); //ç½‘ç»œå¼‚å¸¸
 				}
 			});
 		}

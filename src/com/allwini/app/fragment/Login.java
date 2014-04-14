@@ -13,10 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 public class Login extends BaseFragment {
 	EditText username, psw;
+	ProgressBar pb ;
     DataPool dp ;
+    
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class Login extends BaseFragment {
 		username = (EditText) v.findViewById(R.id.et_username);
 		psw = (EditText) v.findViewById(R.id.et_psw);
 		v.findViewById(R.id.btn_login).setOnClickListener(this);
+		pb =(ProgressBar) v.findViewById(R.id.progressBar);
 		String _name = (String)dp.get("username");
 		String _psw = (String)dp.get("password");
 		if(_name!=null){
@@ -46,11 +50,11 @@ public class Login extends BaseFragment {
 		switch (v.getId()) {
 		case R.id.btn_login:
 			if ("".equals(username.getText().toString())) {
-				toast("’À∫≈≤ªƒ‹Œ™ø’");
+				toast("‰∏çËÉΩ‰∏∫Á©∫");
 				return;
 			}
 			if ("".equals(psw.getText().toString())) {
-				toast("√‹¬Î≤ªƒ‹Œ™ø’");
+				toast("‰∏çËÉΩ‰∏∫Á©∫");
 				return;
 			}
 			dp.put("username", username.getText().toString());
@@ -59,24 +63,24 @@ public class Login extends BaseFragment {
 			api.login(username.getText().toString(), psw.getText().toString(), new AsyncHttpResponseHandler() {
 				@Override
 				public void onStart() {
-				 toast("login..");
+					pb.setVisibility(View.VISIBLE);
 				}
 
 				@Override
 				public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
 					 ((Main)getActivity()).LoginSuccess();
-					 Log.i("debug", new String(arg2));
+//					 Log.i("debug", new String(arg2));
 				}
 
 				@Override
 				public void onFailure(int arg0, Header[] arg1, byte[] arg2,
 						Throwable arg3) {
-					 toast("«ÎºÏ≤ÈÕ¯¬Á");
+					 toast("ÁôªÂΩïÂ§±Ë¥•");
 				}
 
 				@Override
 				public void onFinish() {
-					 
+					pb.setVisibility(View.INVISIBLE);
 				}
 			});
 			break;

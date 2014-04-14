@@ -15,7 +15,7 @@ public class AllwiniAPI {
 		params.add("user_name", username);
 		params.add("password", password);
 		params.add("ret_url", "index.php?app=message&act=checknew");
-		BaseClient.get("http://www.allwini.com/index.php?app=member&act=login",
+		BaseClient.post("http://www.allwini.com/index.php?app=member&act=login",
 				params, responseHandler);
 	}
 	

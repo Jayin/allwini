@@ -18,6 +18,8 @@ public class Main extends FragmentActivity implements UpdateFragmet {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		getActionBar().setIcon(R.drawable.ic_icon);
+		getActionBar().setDisplayUseLogoEnabled(true);
 		fm = getSupportFragmentManager();
 		if (getIntent().getAction().equals(Constant.Action_to_login)) {
 			fm.beginTransaction().add(R.id.container, new Login(), "login")
