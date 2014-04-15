@@ -9,7 +9,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="正在获取。。。"
+        android:text="正在获取..."
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_status"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="1.每5秒去刷新一次,有未读消息均会发声通知提醒,直到未读消息为0 \n2.支持后台运行，可以关闭该页"
         android:textColor="@android:color/black" />
 
 </RelativeLayout>
